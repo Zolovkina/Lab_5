@@ -8,6 +8,7 @@ output: html_document
   ## Интерактивная картограмма
   #Построена на [данных Всемирного банка по эффективности госпомощи стран](http://data.worldbank.org/topic/aid-effectiveness?view=chart).
 
+---
 
 #Загрузка пакетов
 install.packages('WDI')
