@@ -54,4 +54,4 @@ TG <- gvisMerge(g.tbl, g.chart,
 
 
 # вставляем результат в html-документ
-print(TG, 'chart')```
+print(TG, 'chart')
