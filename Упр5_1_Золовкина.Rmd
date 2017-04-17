@@ -1,0 +1,54 @@
+---
+title: "Эффективность госпомощи стран"
+author: "Julija Zolovkina"
+date: '17 апреля 2017 г '
+output: html_document
+---
+
+
+
+Цель - Интерактивная карта-хороплет стран мира (GVis), показатель – любой из раздела «Aid Effectiveness» (Эффективность госпомощи) базы Всемирного банка.
+
+```{r Пакеты, warning = F, message = F}
+library('WDI')
+library('googleVis')
+library('dtplyr')
+library('data.table')
+library('leaflet')
+```
+
+## Загрузка и чтение данных
+
+Исходные данные: Показатель IncomeGroup из раздела «Aid Effectiveness»
+
+```{r Загрузка данных, warning = F, message = F}
+# Загружаем файл с данными Эффективности госпомощи стран
+fileURL <- 'https://github.com/Zolovkina/Lab_5/blob/master/Data5_1.csv'
+
+DT <- read.table(fileURL, header = T, as.is = T, sep = ',', 
+                 fileEncoding = 'cp1251')
+
+# объект: таблица исходных данных
+g.tbl <- gvisTable(data = DT, 
+                   options = list(width = 220, height = 400))
+
+# объект: интерактивная карта
+g.chart <- gvisGeoChart(data = DT, 
+                        locationvar = 'Region', 
+                        colorvar = 'IncomeGroup', 
+                        options = list(width = 500, 
+                                       height = 400, 
+                                       dataMode = 'regions'))
+
+# размещаем таблицу и карту на одной панели (слева направо)
+TG <- gvisMerge(g.tbl, g.chart, 
+                horizontal = TRUE, 
+                tableOptions = 'bgcolor=\"#CCCCCC\" cellspacing=10')
+
+
+
+# вставляем результат в html-документ
+print(TG, 'chart')
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
