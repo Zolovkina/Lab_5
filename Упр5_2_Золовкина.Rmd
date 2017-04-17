@@ -1,0 +1,44 @@
+---
+title: "Lab5_2"
+author: "Julija Zolovkina"
+date: '17 апреля 2017 г '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library('leaflet')
+```
+
+Создание leaflet-карты с пятью объектами (сеть ректоранов Макдональдс в Москве)
+
+```{r Карта на основе leaflet, , results = 'asis', message = F}
+# картинка-логотип для маркеров объекта
+fileURL1 <- 'http://toplogos.ru/images/thumbs/preview-logo-mcdonalds.png'
+
+mc.icon <- makeIcon(iconUrl = fileURL1, 
+                      iconWidth = 45,
+                       iconHeight = 33)
+
+# загружаем данные с характеристиками объектов
+fileURL <- 'https://github.com/Zolovkina/Lab_5/blob/master/Data5_2.csv'
+df <- read.table(fileURL, header = T, as.is = T, 
+                 sep = ';', dec = ',',encoding = 'UTF-8')
+
+# таблица с координатами
+mc.loc <- df[, c('lat', 'lng')]
+
+# подписи к объектам с гиперссылками
+mc.sites <- paste0("<a href='", df[, 'hyperlink'], "'>", 
+                       df[, 'address_eng'], "</a></br><em>", 
+                       df[, 'address_ru'], "</em>")
+
+# создаём виджет с картой
+myMap <- mc.loc %>% leaflet(width = 800, height = 800) %>% 
+addTiles() %>% addMarkers(icon = mc.icon, popup = mc.sites)
+
+# рисуем карту
+myMap
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
